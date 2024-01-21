@@ -19,7 +19,7 @@ import frc.robot.lib.k;
 public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
   TalonFX m_leftMotor;
   TalonFX m_rightMotor;
-  CANSparkMax m_rotateMotor;
+ // CANSparkMax m_rotateMotor;
   VoltageOut m_spinVoltageOut = new VoltageOut(0);
   PIDController m_rotatePID = new PIDController(0.01, 0, 0);
   double m_spinSpeed = 0;
@@ -28,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
       ((ICommand)this.getCurrentCommand()).updateDashboard();
       SmartDashboard.putString("ShooterSubsystem", this.getCurrentCommand().getName());
     }
-    SmartDashboard.putNumber("Shooter Angle", getRotateAngle());
+   // SmartDashboard.putNumber("Shooter Angle", getRotateAngle());
     SmartDashboard.putNumber("Shooter Speed", m_spinSpeed);
   }
 
@@ -41,9 +41,9 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
   public void initialize() {
 
     RobotContainer.subsystems.add(this);
-    m_leftMotor = new TalonFX(0,k.ROBORIO_CAN_IDS.NAME);
-    m_rightMotor = new TalonFX(0,k.ROBORIO_CAN_IDS.NAME);
-    m_rotateMotor = new CANSparkMax(0, MotorType.kBrushless);
+    m_leftMotor = new TalonFX(30,k.ROBORIO_CAN_IDS.NAME);
+    m_rightMotor = new TalonFX(31,k.ROBORIO_CAN_IDS.NAME);
+    //m_rotateMotor = new CANSparkMax(0, MotorType.kBrushless);
     
   }
   /** Spin the spinners
@@ -62,10 +62,11 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
   public void rotate(double _angle){
     double pid = m_rotatePID.calculate(getRotateAngle(), _angle);
     MathUtil.clamp(pid, -2, 2);
-    m_rotateMotor.setVoltage(pid*k.ROBOT.BATTERY_MAX_VOLTS);
+    //m_rotateMotor.setVoltage(pid*k.ROBOT.BATTERY_MAX_VOLTS);
   }
   public double getRotateAngle(){
-    return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
+    return 0;
+    //return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
   }
   @Override
   public void periodic() {

@@ -44,7 +44,7 @@ public class RobotContainer {
   private Notifier m_telemetry;
 
   
-  public static final CommandPS5Controller s_driverController = new CommandPS5Controller(k.OI.DRIVER_CONTROLLER_PORT);
+  //public static final CommandPS5Controller s_driverController = new CommandPS5Controller(k.OI.DRIVER_CONTROLLER_PORT);
   public static final CommandPS5Controller s_operatorController = new CommandPS5Controller(k.OI.OPERATOR_CONTROLLER_PORT);
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
