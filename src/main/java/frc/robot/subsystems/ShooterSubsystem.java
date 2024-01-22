@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,6 +24,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
   VoltageOut m_spinVoltageOut = new VoltageOut(0);
   PIDController m_rotatePID = new PIDController(0.01, 0, 0);
   double m_spinSpeed = 0;
+  ArmFeedforward m_rotateFF = new ArmFeedforward(0, 0, 0);
   public void updateDashboard() {
     if(this.getCurrentCommand() != null){
       ((ICommand)this.getCurrentCommand()).updateDashboard();
@@ -60,9 +62,15 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
    * @param _angle Degrees
    */
   public void rotate(double _angle){
+
+    // PID calculates the value the motor voltage should be at based on the error of the requested angle to the actual angle
     double pid = m_rotatePID.calculate(getRotateAngle(), _angle);
-    MathUtil.clamp(pid, -2, 2);
-    m_rotateMotor.setVoltage(pid*k.ROBOT.BATTERY_MAX_VOLTS);
+    // Limit the calculated value of the PID which is used as the velocity
+    MathUtil.clamp(pid, -0.1, 0.1);
+    // get a feedforward value based on a changing gravity
+    double ff = m_rotateFF.calculate(getRotateAngle(), pid);
+    
+    m_rotateMotor.setVoltage(ff*k.ROBOT.BATTERY_MAX_VOLTS);
   }
   public double getRotateAngle(){
     return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
