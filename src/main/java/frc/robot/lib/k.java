@@ -29,6 +29,7 @@ public final class k {
   }
   public static class ROBORIO_CAN_IDS{
     public static final String NAME = "rio";
+    public static final int INTAKE_SPIN = 40;
   }
   public static class CONVERT{
     public static final double DEGREES_TO_RADIANS = 0.017453292519943295;

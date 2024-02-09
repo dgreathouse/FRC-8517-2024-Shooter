@@ -20,7 +20,7 @@ import frc.robot.lib.k;
 public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
   TalonFX m_leftMotor;
   TalonFX m_rightMotor;
-  CANSparkMax m_rotateMotor;
+ // CANSparkMax m_rotateMotor;
   VoltageOut m_spinVoltageOut = new VoltageOut(0);
   PIDController m_rotatePID = new PIDController(0.01, 0, 0);
   double m_spinSpeed = 0;
@@ -45,7 +45,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
     RobotContainer.subsystems.add(this);
     m_leftMotor = new TalonFX(0,k.ROBORIO_CAN_IDS.NAME);
     m_rightMotor = new TalonFX(0,k.ROBORIO_CAN_IDS.NAME);
-    m_rotateMotor = new CANSparkMax(0, MotorType.kBrushless);
+   // m_rotateMotor = new CANSparkMax(0, MotorType.kBrushless);
     
   }
   /** Spin the spinners
@@ -54,8 +54,8 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
    */
   public void spin(double _speed){
     m_spinSpeed = _speed * k.ROBOT.BATTERY_MAX_VOLTS;
-    m_leftMotor.setControl(m_spinVoltageOut.withEnableFOC(true).withOutput(m_spinSpeed));
-    m_rightMotor.setControl(m_spinVoltageOut.withEnableFOC(true).withOutput(-m_spinSpeed));
+    m_leftMotor.setControl(m_spinVoltageOut.withEnableFOC(true).withOutput(m_spinSpeed).withEnableFOC(true));
+    m_rightMotor.setControl(m_spinVoltageOut.withEnableFOC(true).withOutput(-m_spinSpeed).withEnableFOC(true));
   }
   /** Rotate the shooter to an anlge
    * 
@@ -70,10 +70,11 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
     // get a feedforward value based on a changing gravity
     double ff = m_rotateFF.calculate(getRotateAngle(), pid);
     
-    m_rotateMotor.setVoltage(ff*k.ROBOT.BATTERY_MAX_VOLTS);
+   // m_rotateMotor.setVoltage(ff*k.ROBOT.BATTERY_MAX_VOLTS);
   }
   public double getRotateAngle(){
-    return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
+  //  return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
+    return 0;
   }
   @Override
   public void periodic() {
