@@ -43,8 +43,8 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
   public void initialize() {
 
     RobotContainer.subsystems.add(this);
-    m_leftMotor = new TalonFX(0,k.ROBORIO_CAN_IDS.NAME);
-    m_rightMotor = new TalonFX(0,k.ROBORIO_CAN_IDS.NAME);
+    m_leftMotor = new TalonFX(30,k.ROBORIO_CAN_IDS.NAME);
+    m_rightMotor = new TalonFX(31,k.ROBORIO_CAN_IDS.NAME);
    // m_rotateMotor = new CANSparkMax(0, MotorType.kBrushless);
     
   }
