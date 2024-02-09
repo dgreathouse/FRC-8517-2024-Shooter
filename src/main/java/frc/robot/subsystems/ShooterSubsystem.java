@@ -30,7 +30,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
       ((ICommand)this.getCurrentCommand()).updateDashboard();
       SmartDashboard.putString("ShooterSubsystem", this.getCurrentCommand().getName());
     }
-    SmartDashboard.putNumber("Shooter Angle", getRotateAngle());
+   // SmartDashboard.putNumber("Shooter Angle", getRotateAngle());
     SmartDashboard.putNumber("Shooter Speed", m_spinSpeed);
   }
 
@@ -45,7 +45,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
     RobotContainer.subsystems.add(this);
     m_leftMotor = new TalonFX(0,k.ROBORIO_CAN_IDS.NAME);
     m_rightMotor = new TalonFX(0,k.ROBORIO_CAN_IDS.NAME);
-   // m_rotateMotor = new CANSparkMax(0, MotorType.kBrushless);
+    m_rotateMotor = new CANSparkMax(0, MotorType.kBrushless);
     
   }
   /** Spin the spinners
@@ -65,16 +65,11 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
 
     // PID calculates the value the motor voltage should be at based on the error of the requested angle to the actual angle
     double pid = m_rotatePID.calculate(getRotateAngle(), _angle);
-    // Limit the calculated value of the PID which is used as the velocity
-    MathUtil.clamp(pid, -0.1, 0.1);
-    // get a feedforward value based on a changing gravity
-    double ff = m_rotateFF.calculate(getRotateAngle(), pid);
-    
-   // m_rotateMotor.setVoltage(ff*k.ROBOT.BATTERY_MAX_VOLTS);
+    MathUtil.clamp(pid, -2, 2);
+    m_rotateMotor.setVoltage(pid*k.ROBOT.BATTERY_MAX_VOLTS);
   }
   public double getRotateAngle(){
-  //  return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
-    return 0;
+    return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
   }
   @Override
   public void periodic() {
