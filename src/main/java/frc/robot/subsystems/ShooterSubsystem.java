@@ -65,6 +65,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
     double pid = m_rotatePID.calculate(getRotateAngle(), _angle);
     MathUtil.clamp(pid, -2, 2);
   //  m_rotateMotor.setVoltage(pid*k.ROBOT.BATTERY_MAX_VOLTS);
+    RobotContainer.m_leds.setPositionAccuaracy(_angle, getRotateAngle(), 1.0);
   }
   public double getRotateAngle(){
   //  return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
@@ -72,6 +73,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
   }
   @Override
   public void periodic() {
+    
     // This method will be called once per scheduler run
   }
 }
