@@ -19,6 +19,7 @@ import frc.robot.commands.Shooter.ShooterDefaultCommand;
 
 import frc.robot.lib.GD;
 import frc.robot.lib.ISubsystem;
+import frc.robot.lib.LEDs;
 import frc.robot.lib.k;
 
 import frc.robot.subsystems.IntakeSubsystem;
@@ -40,6 +41,7 @@ public class RobotContainer {
   private static final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final ShooterDefaultCommand m_shooterDefaultCommand = new ShooterDefaultCommand(m_shooterSubsystem);
 
+  public static final LEDs m_leds = new LEDs(1);
 
   private Notifier m_telemetry;
 

@@ -4,8 +4,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -25,6 +23,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
   VoltageOut m_spinVoltageOut = new VoltageOut(0);
   PIDController m_rotatePID = new PIDController(0.01, 0, 0);
   double m_spinSpeed = 0;
+  ArmFeedforward m_rotateFF = new ArmFeedforward(0, 0, 0);
   public void updateDashboard() {
     if(this.getCurrentCommand() != null){
       ((ICommand)this.getCurrentCommand()).updateDashboard();
@@ -45,8 +44,7 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
     RobotContainer.subsystems.add(this);
     m_leftMotor = new TalonFX(30,k.ROBORIO_CAN_IDS.NAME);
     m_rightMotor = new TalonFX(31,k.ROBORIO_CAN_IDS.NAME);
-   // m_rotateMotor = new CANSparkMax(10, MotorType.kBrushless);
-    SmartDashboard.putNumber("Shooter Rotate Voltage", 0);
+    //m_rotateMotor = new CANSparkMax(0, MotorType.kBrushless);
     
   }
   /** Spin the spinners
@@ -55,29 +53,25 @@ public class ShooterSubsystem extends SubsystemBase implements ISubsystem {
    */
   public void spin(double _speed){
     m_spinSpeed = _speed * k.ROBOT.BATTERY_MAX_VOLTS;
-    m_leftMotor.setControl(m_spinVoltageOut.withEnableFOC(true).withOutput(-m_spinSpeed));
-    m_rightMotor.setControl(m_spinVoltageOut.withEnableFOC(true).withOutput(m_spinSpeed));
-
-    SmartDashboard.putNumber("Left Speed", m_leftMotor.getVelocity().getValueAsDouble());
-    SmartDashboard.putNumber("Right Speed", m_rightMotor.getVelocity().getValueAsDouble());
+    m_leftMotor.setControl(m_spinVoltageOut.withEnableFOC(true).withOutput(m_spinSpeed));
+    m_rightMotor.setControl(m_spinVoltageOut.withEnableFOC(true).withOutput(-m_spinSpeed));
   }
   /** Rotate the shooter to an anlge
    * 
    * @param _angle Degrees
    */
   public void rotate(double _angle){
-    // double pid = m_rotatePID.calculate(getRotateAngle(), _angle);
-    // MathUtil.clamp(pid, -2, 2);
+    double pid = m_rotatePID.calculate(getRotateAngle(), _angle);
+    MathUtil.clamp(pid, -2, 2);
     //m_rotateMotor.setVoltage(pid*k.ROBOT.BATTERY_MAX_VOLTS);
-    double SD_Volts = SmartDashboard.getNumber("Shooter Rotate Voltage", 0);
-  //  m_rotateMotor.setVoltage(SD_Volts);
   }
   public double getRotateAngle(){
-    return 0;
-    //return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
+  //  return m_rotateMotor.getEncoder().getPosition() / k.SHOOTER.ROTATE_GEAR_RATIO * 360.0;
+  return 0;
   }
   @Override
   public void periodic() {
+    
     // This method will be called once per scheduler run
   }
 }

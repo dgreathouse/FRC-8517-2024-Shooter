@@ -2,7 +2,9 @@
 
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.lib.ICommand;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -16,11 +18,21 @@ public class IntakeDefaultCommand extends Command implements ICommand {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    SmartDashboard.putNumber("Intake Set Speed", 0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+
+    if(RobotContainer.s_operatorController.triangle().getAsBoolean()){
+      double speed = SmartDashboard.getNumber("Intake Set Speed", 0);
+      m_intake.spin(speed);
+    }else {
+      m_intake.spin(0);
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
