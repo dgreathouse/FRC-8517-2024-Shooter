@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,16 +16,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commandGroups.AutoDoNothing;
 
-import frc.robot.commands.Intake.IntakeDefaultCommand;
-import frc.robot.commands.Shooter.ShooterDefaultCommand;
+
 
 import frc.robot.lib.GD;
 import frc.robot.lib.ISubsystem;
 import frc.robot.lib.LEDs;
 import frc.robot.lib.k;
 
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 
 
 /**
@@ -35,16 +34,12 @@ public class RobotContainer {
   public static Set<ISubsystem> subsystems = new HashSet<>();
 
 
-  private static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  private final IntakeDefaultCommand m_intakeDefaultCommand = new IntakeDefaultCommand(m_intakeSubsystem);
 
-  private static final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final ShooterDefaultCommand m_shooterDefaultCommand = new ShooterDefaultCommand(m_shooterSubsystem);
 
   public static final LEDs m_leds = new LEDs(1);
 
   private Notifier m_telemetry;
-
+  PhotonCamera camera = new PhotonCamera("photonvision");
   
   //public static final CommandPS5Controller s_driverController = new CommandPS5Controller(k.OI.DRIVER_CONTROLLER_PORT);
   public static final CommandPS5Controller s_operatorController = new CommandPS5Controller(k.OI.OPERATOR_CONTROLLER_PORT);
@@ -61,10 +56,9 @@ public class RobotContainer {
   /** This is the constructor for the class. */
   public RobotContainer() {
 
-    m_intakeSubsystem.setDefaultCommand(m_intakeDefaultCommand);
-    m_shooterSubsystem.setDefaultCommand(m_shooterDefaultCommand);
 
-    
+
+    camera.setDriverMode(true);
     // Configure the trigger bindings
     configureBindings();
 
@@ -85,6 +79,7 @@ public class RobotContainer {
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
    */
   private void configureBindings() {
+    m_leds.setAllianceColor();
     //new Trigger(RobotContainer.m_drivetrainSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
     // s_driverController.square().onTrue(new InstantCommand(m_drivetrainSubsystem::changeDriveMode, m_drivetrainSubsystem));
     // s_driverController.triangle().onTrue(new InstantCommand(m_drivetrainSubsystem::resetYaw, m_drivetrainSubsystem));

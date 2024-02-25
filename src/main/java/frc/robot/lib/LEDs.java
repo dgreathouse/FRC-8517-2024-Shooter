@@ -12,7 +12,7 @@ public class LEDs {
     private AddressableLED m_led;
     private AddressableLEDBuffer m_ledBuffer;
     /** Number of LEDs in the strip. Change this number to match the number of LEDs */
-    private int m_numLEDs = 50;
+    private int m_numLEDs = 5;
     private int m_red = 0;
     private int m_green = 0;
     private int m_blue = 0;
